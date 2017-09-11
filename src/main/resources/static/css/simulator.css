@@ -1,0 +1,215 @@
+/* BUTTONS */
+.btn {
+	font-weight: bolder;
+}
+
+.buttons {
+	border-width: 3px;
+	border-color: #62CDEC;
+	border-top-style: solid;
+	background-color: #1B74C9;
+	margin-bottom: 10px;
+}
+
+.container-buttons {
+	margin: 10px;
+}
+
+.btn-simulator {
+	width: 100%;
+	color: #1B74C9;
+}
+
+.inactive {
+	width: 100%;
+	background-color: #1B74C9;
+	color: white;
+	border-color: white;
+	font-weight: 300;
+	border-width: 2px;
+}
+
+.buttons-panel {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+}
+
+/* PANELS */
+.box-simulator {
+	border: #003E93;
+	border-style: solid;
+	border-width: 3px;
+	border-radius: 14px;
+	margin-bottom: 10px;
+}
+
+.left-simulator {
+	height: 600px;
+}
+
+.center-simulator {
+	height: 600px;
+}
+
+.right-simulator {
+	height: 600px;
+}
+
+.top-ten {
+	margin-top: 10px;
+}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3,
+	.col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9,
+	.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3,
+	.col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,
+	.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3,
+	.col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9,
+	.col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3,
+	.col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9,
+	.col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3,
+	.col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+	position: relative;
+	min-height: 1px;
+	padding-right: .5375rem;
+	padding-left: .5375rem;
+}
+
+/* TITLE */
+.tittle {
+	text-align: center;
+}
+
+.title-simulator {
+	color: white;
+	font-weight: 300;
+}
+
+.complete {
+	width: 100%;
+}
+
+.simulator-body {
+	background-color: transparent;
+	background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05)
+		25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%,
+		rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%,
+		transparent 77%, transparent),
+		linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%,
+		rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%,
+		rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%,
+		transparent 77%, transparent);
+	height: 100%;
+	background-size: 50px 50px;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #62CDEC;
+	margin: 20px;
+}
+
+/* TABLE */
+table {
+	border-radius: 10px;
+	display: block;
+	height: 100%;
+	overflow-y: scroll;
+	max-height: 97%;
+}
+
+#table-experimental-data {
+	color: white;
+}
+
+.row-center {
+	text-align: center;
+}
+
+/* TEXT */
+.body-simulator {
+	display: table;
+}
+
+.text-simulator {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.text-simulator p {
+	color: white;
+	font-weight: 300;
+	font-size: 15px;
+	text-align: justify;
+	align-items: center;
+	margin: 15px;
+}
+
+.right-simulator p {
+	color: white;
+	font-weight: 300;
+	font-size: 15px;
+	text-align: justify;
+	align-items: center;
+	margin: 15px;
+}
+
+.error {
+	color: red !important;
+}
+
+/* BODY */
+body {
+	background: red; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(left top, #1F96E0, #1A68C1);
+	/* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(bottom right, #1F96E0, #1A68C1);
+	/* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(bottom right, #1F96E0, #1A68C1);
+	/* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom right, #1F96E0, #1A68C1);
+}
+
+/* LOG */
+.box-log {
+	display: none;
+}
+
+#console-log{
+	overflow-y: scroll;
+}
+
+/* CHART */
+#chart {
+	min-width: 100%;
+	height: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+/* UTIL */
+.hidden {
+	display: none;
+}
+
+/* LOADING */
+.loading {
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: rgba(53, 186, 255, 0.5)
+		url('../../img/loading.gif')
+		50% 50% no-repeat;
+}
+
+/* SIMULATION BOX */
+.input-simulation {
+	color: white;
+	margin-top: 10px;
+	overflow-y: scroll;
+	max-height: 97%;
+}

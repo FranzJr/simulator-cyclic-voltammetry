@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Cyclic Voltammetry</title> 
+
+	<!-- CSS Files -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/slick.css">
+	<link rel="stylesheet" href="css/simulator.css">
+	
+	<link rel="stylesheet" href="notifications/sweetalert.css">	
+
+	<!-- JS Scripts -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/tether.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/slick.min.js"></script>
+	<script src="js/simulator.js"></script>	
+	<script src="js/actions/reader.js"></script>	
+	<script src="js/actions/log.js"></script>	
+	<script src="js/actions/plot.js"></script>
+	<script src="js/actions/simulator.js"></script>
+	<script src="js/actions/fitting.js"></script>	
+	<script src="js/actions/buttons.js"></script>		
+	
+	<script src="notifications/sweetalert.js"></script>	
+	
+	<script src="js/highcharts/highcharts.js"></script>
+	<script src="js/highcharts/exporting.js"></script>
+	
+	<title>Cyclic Voltammetry Simulator</title>
+</head>
+<body>
+	<!-- <p>Get your greeting <a href="/greeting">here</a></p> -->
+
+	<div id="load" class="loading hidden"></div>
+	
+	<div class="row simulator-body">
+		<div class="col-sm-12 top-ten">
+			<div class="col-sm-3 file-container">
+				<input id="experimental-data" type="file" class="hidden" data-input="false" data-buttonText="Load File">
+				<button id="experimental-data-btn" class="btn btn-secondary complete btn-action" type="button" data-toggle="modal" data-target="#exampleModal">Load File</button>
+				<button id="simulation-data-btn" class="btn btn-secondary complete btn-action hidden" type="button">Play Simulation</button>
+				<button id="fitting-data-btn" class="btn btn-secondary complete btn-action hidden" type="button">Play Fitting</button>
+			</div>	
+			<div class="col-sm-9 tittle">
+				<h1 class="title-simulator">Cyclic Voltammetry Simulator</h1>
+			</div>	
+		</div>
+		<div class="col-sm-12">
+			<div class="col-sm-3 box-input">
+				<div id="experimental-data-box" class="left-simulator box-simulator">
+					<table id="table-experimental-data" class="table table-responsive hidden">
+						<thead>
+							<tr>
+								<th class="row-center">#</th>								
+								<th class="row-center">X</th>
+								<th class="row-center">Y</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div id="simulation-data-box" class="left-simulator box-simulator hidden">
+					<div class="input-simulation container">
+						<div class="form-group row">
+					      <div class="col-sm-12">
+					      	<label for="rateConstantK" class="col-sm-12 col-form-label col-form-label-sm">Rate Constant k / cms-1</label>
+					        <input type="text" class="form-control form-control-sm" id="rateConstantK" placeholder="0.1" value="0.1">
+					      </div>
+					    </div>
+					    <div class="form-group row">
+					      <div class="col-sm-12">
+					      	<label for="concentrationRedoxC" class="col-sm-12 col-form-label col-form-label-sm">Concentration of Redox Spieces c / mM</label>
+					        <input type="text" class="form-control form-control-sm" id="concentrationRedoxC" placeholder="1.0" value="1.0">
+					      </div>
+					    </div>
+					    <div class="form-group row">
+					      <div class="col-sm-12">
+					      	<label for="diffusionConstantD" class="col-sm-12 col-form-label col-form-label-sm">Diffusion Constant D / cm2s-1</label>
+					        <input type="text" class="form-control form-control-sm" id="diffusionConstantD" placeholder="1.0E-5" value="1.0E-5">
+					      </div>
+					    </div>
+					    <div class="form-group row">
+					      <div class="col-sm-12">
+					      	<label for="scanRateV" class="col-sm-12 col-form-label col-form-label-sm">Scan Rate v / mVs-1</label>
+					        <input type="text" class="form-control form-control-sm" id="scanRateV" placeholder="100.0" value="100.0" >
+					      </div>
+					    </div>
+					    <div class="form-group row">
+					      <div class="col-sm-12">
+					      	<label for="upperPotentialVU" class="col-sm-12 col-form-label col-form-label-sm">Upper Potential Vu / mV   ( > 200 mV )</label>
+					        <input type="text" class="form-control form-control-sm" id="upperPotentialVU" placeholder="400.0" value="400.0">
+					      </div>
+					    </div>
+					    <div class="form-group row">
+					      <div class="col-sm-12">
+					      	<label for="lowerPotentialVL" class="col-sm-12 col-form-label col-form-label-sm">Lower Potential Vl / mV</label>
+					        <input type="text" class="form-control form-control-sm" id="lowerPotentialVL" placeholder="-400.0" value="-400.0">
+					      </div>
+					    </div>
+					    <div class="form-group row">
+					      <div class="col-sm-12">
+					      	<label for="cycleNumberCN" class="col-sm-12 col-form-label col-form-label-sm">Cycle Number   ( 1 - 3 )</label>
+					        <input type="text" class="form-control form-control-sm" id="cycleNumberCN" placeholder="1" value="1">
+					      </div>
+					    </div>
+					    <div class="form-group row">
+					    		<a id="simulation-data-file" type="button" class="col-sm-12 btn btn-secondary complete btn-action"  href="">Download File</a>
+					    </div>
+					</div>
+				</div>				
+			</div>	
+			<div class="col-sm-9 box-chart">
+				<div id="center-simulator" class="center-simulator box-simulator body-simulator">
+					<div class="text-simulator">
+						<p>ABSTRACT: Cyclic voltammetry (CV) is a popular technique for the study of electrochemical mechanisms because the method can provide useful information on the redox couple. The technique involves the application of a potential ramp on an unstirred solution while the current is monitored, and then the ramp is reversed for a return sweep. 
+				<br><br>
+				 The CV waveform is dependent on several processes including charge transfer, diffusion, and coupled homogeneous reactions. Computer simulations are useful to study these effects.</p>
+					</div>
+					<div id="chart"></div>
+				</div>
+			</div>	
+			<div class="col-sm-3 box-log">
+				<div id="console-log" class="right-simulator box-simulator">
+				</div>
+			</div>	
+		</div>
+		<div class="col-sm-12 buttons">
+			<div class="container-buttons">
+				<div class="col-sm-3 btn-active">				
+					<button id="action-data" type="button" class="btn btn-secondary btn-simulator btn-footer" data-id="1">Experimental Data</button>
+				</div>
+				<div class="col-sm-2">				
+					<button id="action-simulation" type="button" class="btn btn-secondary btn-simulator btn-footer inactive" data-id="1">Simulation</button>
+				</div>
+				<div class="col-sm-3">				
+					<button id="action-fitting" type="button" class="btn btn-secondary btn-simulator btn-footer inactive" data-id="1">Nonlinear Least Squares Fitting</button>
+				</div>
+				<div class="col-sm-3">				
+					<button id="action-concentration-plot" type="button" class="btn btn-secondary btn-footer btn-simulator inactive" data-id="1">Concentrations Plots</button>
+				</div>
+				<div class="col-sm-1">				
+					<button id="action-log" type="button" class="btn btn-secondary btn-simulator btn-footer inactive" data-id="1">Log</button>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h1 class="modal-title" id="exampleModalLabel">Setup File</h1>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -80px;">
+		          <span style="font-size: 4.5rem;" aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <div class="form-group row">
+			      <div class="col-sm-12">
+			      	<label style="font-size: 1.5rem;" for="poinSeparator" class="col-sm-12 col-form-label col-form-label-sm">Point Separator</label>
+			        <input maxlength="1" type="text" class="form-control form-control-sm" id="poinSeparator" value=",">
+			      </div>
+			 	</div>
+			 	<div class="form-group row">
+			      <div class="col-sm-12">
+			      	<label style="font-size: 1.5rem;" for="decimalSeparator" class="col-sm-12 col-form-label col-form-label-sm">Decimal Separator</label>
+			        <input maxlength="1" type="text" class="form-control form-control-sm" id="decimalSeparator" value=".">
+			      </div>
+			 	</div>
+			 	<fieldset class="form-group">
+				    <legend>Ignore Errors</legend>
+				    <div class="form-check">
+				      <label class="form-check-label">
+				        <input type="radio" class="form-check-input" name="optionsRadios" id="ignoreErrosYes" value="option1" checked>
+				        Yes
+				      </label>
+				    </div>
+				    <div class="form-check">
+				     <label class="form-check-label">
+				        <input type="radio" class="form-check-input" name="optionsRadios" id="ignoreErrosNo" value="option2">
+				        No
+				      </label>
+				    </div>
+				  </fieldset>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		        <button id="experimental-btn" type="button" class="btn btn-primary" data-dismiss="modal">Load File</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+</body>
+</html>
