@@ -169,8 +169,8 @@ public class Simulation {
 
 			if (x < xmax) {
 				Double[] item = new Double[2];
-				item[0] = d7;
-				item[1] = d9;
+				item[0] = d7/1000;
+				item[1] = d9/100000;
 				result.add(item);
 //				System.out.println(d7 + "," + d9);
 			}
