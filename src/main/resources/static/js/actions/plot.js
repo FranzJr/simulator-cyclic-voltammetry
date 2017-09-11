@@ -20,6 +20,7 @@ function plotChart(data){
 	            fontFamily: 'inherit'
 	        }
 	    },
+	    credits:	{enabled:false},
 	    title: {
 	        text: 'Experimental  data'
 	    },
@@ -84,7 +85,6 @@ function plotChartOn(dataSimulation, dataExperimental){
 	        }
 		},
 		credits:	{enabled:false},
-	    exporting:	{enabled:false},
 	    title:		{text:'Experimental Data vs Simulated Data'},
 	    xAxis: {
 	        reversed: true,
@@ -149,7 +149,6 @@ function plotChartIn(dataSimulation, dataExperimental){
 	        }
 		},
 		credits:	{enabled:false},
-	    exporting:	{enabled:false},
 	    title:		{text:'Experimental Data vs Simulated Data'},
 	    xAxis: {
 	        reversed: true,
