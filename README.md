@@ -8,7 +8,10 @@ mvn package && java -jar target/voltammetry-1.0.0.jar
 java -jar dist/voltammetry-1.0.0.jar
 
 # Tools used 
-Maven 3.5.0
-JDK 1.8
-Eclipse 4.7.0
-Bootstrap v4.0.0-alpha
+* Maven 3.5.0
+* JDK 1.8
+* Eclipse 4.7.0
+* Bootstrap v4.0.0-alpha
+* Spring MVC 4
+* Apache Tomcat/8.5.1
+
