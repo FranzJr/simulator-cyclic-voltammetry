@@ -7,9 +7,9 @@ import co.edu.unal.voltammetry.dto.InputSimulationDto;
 
 
 /**
- * 
- * 
- *
+ * @source: kado@sys.wakayama-u.ac.jp http://www.wakayama-u.ac.jp/~kado/
+ * @date: Last Modified at 2004/04/05
+ * @url: http://www.wakayama-u.ac.jp/
  */
 public class Simulation {
 

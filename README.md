@@ -14,4 +14,4 @@ java -jar dist/voltammetry-1.0.0.jar
 * Bootstrap v4.0.0-alpha
 * Spring MVC 4
 * Apache Tomcat/8.5.1
-
+* Highcharts Education https://www.highcharts.com/blog/industry/education/
