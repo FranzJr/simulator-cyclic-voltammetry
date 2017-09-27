@@ -5,13 +5,15 @@ import java.util.List;
 
 import co.edu.unal.voltammetry.dto.InputSimulationDto;
 
-
 /**
  * @source: kado@sys.wakayama-u.ac.jp http://www.wakayama-u.ac.jp/~kado/
  * @date: Last Modified at 2004/04/05
  * @url: http://www.wakayama-u.ac.jp/
  */
 public class Simulation {
+
+	private static double GAS_CONSTANT = 8.31445981D;
+	private static double FARADAY_CONSTANT = 96485.33289D;
 
 	private double k0;
 	private double c0;
@@ -20,13 +22,13 @@ public class Simulation {
 	private double vl0;
 	private double v0;
 	private int cn0;
-	private double k;
-	private double c;
-	private double D;
-	private double vu;
-	private double vl;
-	private double v;
-	private int cn;
+	private double rateConstantK;
+	private double concentrationRedoxC;
+	private double diffusionConstantD;
+	private double upperPotentialVU;
+	private double lowerPotentialVL;
+	private double scanRateV;
+	private int cycleNumberCN;
 	private boolean StartFlag;
 	private boolean VFlag;
 	private int x0;
@@ -35,8 +37,8 @@ public class Simulation {
 	private int ymax;
 	private int x;
 	private int y;
-	private double vmax;
-	private double imax;
+	private double maximunVoltagePositiveAxisX;
+	private double maximumCurrentAxisY;
 	private int vscale;
 	private double iscale;
 
@@ -50,66 +52,72 @@ public class Simulation {
 		v0 = 100D;
 		cn0 = 1;
 		// PRIVATE DATA
-		k = k0;
-		c = c0 * 0.001D;
-		D = D0;
-		vu = vu0 * 0.001D;
-		vl = vl0 * 0.001D;
-		v = v0 * 0.001D;
-		cn = cn0;
+		rateConstantK = k0;
+		concentrationRedoxC = c0 * 0.001D;
+		diffusionConstantD = D0;
+		upperPotentialVU = vu0 * 0.001D;
+		lowerPotentialVL = vl0 * 0.001D;
+		scanRateV = v0 * 0.001D;
+		cycleNumberCN = cn0;
 		StartFlag = false;
 		VFlag = true;
 		x0 = 120;
 		y0 = 150;
 		xmax = 100;
 		ymax = 100;
-		vmax = 500D;
-		imax = 0.29999999999999999D;
+		maximunVoltagePositiveAxisX = 1000D;
+		maximumCurrentAxisY = 20D;
 		vscale = 200;
 		iscale = 0.10000000000000001D;
 	}
 
 	public List<Double[]> play(InputSimulationDto inputData) {
-		k = Double.valueOf(inputData.getRateConstantK()).doubleValue();
-		c = Double.valueOf(inputData.getConcentrationRedoxC()).doubleValue() * 0.001D;
-		D = Double.valueOf(inputData.getDiffusionConstantD()).doubleValue();
-		vu = Math.max(0.20000000000000001D, Double.valueOf(inputData.getUpperPotentialVU()).doubleValue() * 0.001D);
-		vl = Double.valueOf(inputData.getLowerPotentialVL()).doubleValue() * 0.001D;
-		v = Double.valueOf(inputData.getScanRateV()).doubleValue() * 0.001D;
-		cn = Integer.valueOf(inputData.getCycleNumberCN()).intValue();
-		
-		return cvCalc(k, c, D, vu, vl, v, cn);
+		rateConstantK = Double.valueOf(inputData.getRateConstantK()).doubleValue();
+		concentrationRedoxC = Double.valueOf(inputData.getConcentrationRedoxC()).doubleValue() * 0.001D;
+		diffusionConstantD = Double.valueOf(inputData.getDiffusionConstantD()).doubleValue();
+		upperPotentialVU = Double.valueOf(inputData.getUpperPotentialVU()).doubleValue() * 0.001D;
+		// Math.max(0.20000000000000001D,
+		// Double.valueOf(inputData.getUpperPotentialVU()).doubleValue() * 0.001D);
+		lowerPotentialVL = Double.valueOf(inputData.getLowerPotentialVL()).doubleValue() * 0.001D;
+		scanRateV = Double.valueOf(inputData.getScanRateV()).doubleValue() * 0.001D;
+		cycleNumberCN = Integer.valueOf(inputData.getCycleNumberCN()).intValue();
+
+		return cvCalc(rateConstantK, concentrationRedoxC, diffusionConstantD, diffusionConstantD, upperPotentialVU,
+				lowerPotentialVL, scanRateV, cycleNumberCN);
 	}
-	
-	private List<Double[]> cvCalc(double d, double d1, double d2, double d3, double d4, double d5, int i) {
-		
+
+	private List<Double[]> cvCalc(double rateConstant, double concentrationRedox, double diffusionConstantOx,
+			double diffusionConstantRe, double upperPotential, double lowerPotential, double scanRate,
+			int cycleNumber) {
+
 		List<Double[]> result = new ArrayList<>();
-		
+
 		double d6 = 0.0D;
 		double d8 = 0.0D;
-		double d10 = 8.3140000000000001D;
-		double d11 = 96485D;
-		double d12 = 298.14999999999998D;
-		double d13 = 0.5D;
+
+		double temperature = 298.14999999999998D;// EDITAR
+		double alfa = 0.5D;// EDITAR
 		double d14 = 1.0D;
-		int j = 1;
-		double d15 = 0.0D;
-		double d16 = d3;
-		double d17 = d4;
+		double d16 = upperPotential;
+		double d17 = lowerPotential;
+
+		int electronsNumber = 1;// EDITAR
+		double standartPotential = 0.0D;// EDITAR
 		int l = (int) (Math.abs(d16 * 1000D - d17 * 1000D) * 2D);
-		double d18 = Math.abs(((d16 - d17) / d5) * 2D);
+		double d18 = Math.abs(((d16 - d17) / scanRate) * 2D);
 		int i1 = l / 2;
 		double d19 = d18 / (double) l;
 		double d20 = (2D * (d16 - d17)) / (double) l;
-		double d21 = Math.sqrt(d2 * d19 * 2D);
-		int j1 = (int) (6D * Math.sqrt(0.5D * (double) (i * l + 1))) + 5;
+		double d21 = Math.sqrt(diffusionConstantOx * d19 * 2D);
+		int j1 = (int) (6D * Math.sqrt(0.5D * (double) (cycleNumber * l + 1))) + 5;
+
 		double ad[] = new double[j1];
 		double ad1[] = new double[j1];
 		double ad2[] = new double[j1];
 		double ad3[] = new double[j1];
-		double d22 = (d2 * d19) / (d21 * d21);
-		double d23 = d22;
-
+		double d22 = (diffusionConstantOx * d19) / (d21 * d21);
+		// double d23 = d22;
+		double d23 = (diffusionConstantRe * d19) / (d21 * d21);
 		for (int k1 = 0; k1 < j1; k1++) {
 			ad1[k1] = 1.0D;
 			ad[k1] = 1.0D;
@@ -123,19 +131,28 @@ public class Simulation {
 		double d26 = 0.0D;
 		double d27 = 0.0D;
 		double d28 = 0.0D;
-		
-		for (int l1 = 1; l1 <= i * l + 1; l1++) {
+
+		for (int l1 = 1; l1 <= cycleNumber * l + 1; l1++) {
 			int j2 = (int) (6D * Math.sqrt(d22 * (double) l1));
-			double d29 = (-d * (d19 / d21) * Math.exp((-d13 * (double) j * d11 * (d24 - d15)) / d10 / d12) * ad1[0]
-					+ d * (d19 / d21) * Math.exp(((1.0D - d13) * (double) j * d11 * (d24 - d15)) / d10 / d12) * ad3[0])
-					/ (1.0D + (d * (d19 / d21) * Math.exp((-d13 * (double) j * d11 * (d24 - d15)) / d10 / d12))
+			double d29 = (-rateConstant * (d19 / d21)
+					* Math.exp((-alfa * (double) electronsNumber * FARADAY_CONSTANT * (d24 - standartPotential))
+							/ GAS_CONSTANT / temperature)
+					* ad1[0]
+					+ rateConstant * (d19 / d21)
+							* Math.exp(((1.0D - alfa) * (double) electronsNumber * FARADAY_CONSTANT
+									* (d24 - standartPotential)) / GAS_CONSTANT / temperature)
+							* ad3[0])
+					/ (1.0D + (rateConstant * (d19 / d21)
+							* Math.exp((-alfa * (double) electronsNumber * FARADAY_CONSTANT * (d24 - standartPotential))
+									/ GAS_CONSTANT / temperature))
 							/ (2D * d22)
-							+ (d * (d19 / d21) * Math.exp(((1.0D - d13) * (double) j * d11 * (d24 - d15)) / d10 / d12))
+							+ (rateConstant * (d19 / d21) * Math.exp(((1.0D - alfa) * (double) electronsNumber
+									* FARADAY_CONSTANT * (d24 - standartPotential)) / GAS_CONSTANT / temperature))
 									/ (2D * d23));
 			ad[0] = ad1[0] + d22 * (ad1[1] - ad1[0]) + d29;
 			ad2[0] = (ad3[0] + d23 * (ad3[1] - ad3[0])) - d29;
 			double d7 = d24 * 1000D;
-			double d9 = (double) j * d11 * d14 * d1 * d29 * (d21 / d19);
+			double d9 = (double) electronsNumber * FARADAY_CONSTANT * d14 * concentrationRedox * d29 * (d21 / d19);
 			if (l1 <= l + 1 && d9 < d25) {
 				d25 = d9;
 				d27 = d7;
@@ -153,34 +170,33 @@ public class Simulation {
 				ad1[l2] = ad[l2];
 				ad3[l2] = ad2[l2];
 				if ((int) Math.IEEEremainder(l1 - 1, l / 10) == 0) {
-					x = (int) ((double) xmax * (d7 / vmax));
-					y = -(int) ((double) ymax * (d9 / imax));
+					x = (int) ((double) xmax * (d7 / maximunVoltagePositiveAxisX));
+					y = -(int) ((double) ymax * (d9 / maximumCurrentAxisY));
 
 					char c1 = '\226';
 					byte byte0 = 0;
-					if (l1 >= (i * l) / 2 + 1)
+					if (l1 >= (cycleNumber * l) / 2 + 1)
 						byte0 = 120;
 					x = l2 + 1;
 				}
 			}
 
-			x = (int) ((double) xmax * (d7 / vmax));
-			y = -(int) ((double) ymax * (d9 / imax));
+			x = (int) ((double) xmax * (d7 / maximunVoltagePositiveAxisX));
+			y = -(int) ((double) ymax * (d9 / maximumCurrentAxisY));
 
 			if (x < xmax) {
 				Double[] item = new Double[2];
-				item[0] = d7/1000;
-				item[1] = d9/100000;
+				item[0] = d7;// 1000;
+				item[1] = d9;// 100000;
 				result.add(item);
-//				System.out.println(d7 + "," + d9);
+				// System.out.println(d7 + "," + d9);
 			}
 			if (l1 - 1 != 0 && (int) Math.IEEEremainder(l1 - 1, i1) == 0)
 				i2 = -i2;
 			d24 += (double) i2 * d20;
-			
-			
+
 		}
-		
+
 		return result;
 	}
 
@@ -241,59 +257,59 @@ public class Simulation {
 	}
 
 	public double getK() {
-		return k;
+		return rateConstantK;
 	}
 
 	public void setK(double k) {
-		this.k = k;
+		this.rateConstantK = k;
 	}
 
 	public double getC() {
-		return c;
+		return concentrationRedoxC;
 	}
 
 	public void setC(double c) {
-		this.c = c;
+		this.concentrationRedoxC = c;
 	}
 
 	public double getD() {
-		return D;
+		return diffusionConstantD;
 	}
 
 	public void setD(double d) {
-		D = d;
+		diffusionConstantD = d;
 	}
 
 	public double getVu() {
-		return vu;
+		return upperPotentialVU;
 	}
 
 	public void setVu(double vu) {
-		this.vu = vu;
+		this.upperPotentialVU = vu;
 	}
 
 	public double getVl() {
-		return vl;
+		return lowerPotentialVL;
 	}
 
 	public void setVl(double vl) {
-		this.vl = vl;
+		this.lowerPotentialVL = vl;
 	}
 
 	public double getV() {
-		return v;
+		return scanRateV;
 	}
 
 	public void setV(double v) {
-		this.v = v;
+		this.scanRateV = v;
 	}
 
 	public int getCn() {
-		return cn;
+		return cycleNumberCN;
 	}
 
 	public void setCn(int cn) {
-		this.cn = cn;
+		this.cycleNumberCN = cn;
 	}
 
 	public boolean isStartFlag() {
@@ -361,19 +377,19 @@ public class Simulation {
 	}
 
 	public double getVmax() {
-		return vmax;
+		return maximunVoltagePositiveAxisX;
 	}
 
 	public void setVmax(double vmax) {
-		this.vmax = vmax;
+		this.maximunVoltagePositiveAxisX = vmax;
 	}
 
 	public double getImax() {
-		return imax;
+		return maximumCurrentAxisY;
 	}
 
 	public void setImax(double imax) {
-		this.imax = imax;
+		this.maximumCurrentAxisY = imax;
 	}
 
 	public int getVscale() {

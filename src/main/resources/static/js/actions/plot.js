@@ -28,7 +28,7 @@ function plotChart(data){
 	        text: ''
 	    },
 	    xAxis: {
-	        reversed: true,
+	        reversed: false,
 	        title: {
 	            enabled: true,
 	            text: 'Potential (V)'
@@ -87,7 +87,7 @@ function plotChartOn(dataSimulation, dataExperimental){
 		credits:	{enabled:false},
 	    title:		{text:'Experimental Data vs Simulated Data'},
 	    xAxis: {
-	        reversed: true,
+	        reversed: false,
 	        title: {
 	            enabled: true,
 	            text: 'Potential (V)'
@@ -151,7 +151,7 @@ function plotChartIn(dataSimulation, dataExperimental){
 		credits:	{enabled:false},
 	    title:		{text:'Experimental Data vs Simulated Data'},
 	    xAxis: {
-	        reversed: true,
+	        reversed: false,
 	        title: {
 	            enabled: true,
 	            text: 'Potential (V)'
