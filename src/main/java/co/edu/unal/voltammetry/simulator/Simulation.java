@@ -24,7 +24,8 @@ public class Simulation {
 	private int cn0;
 	private double rateConstantK;
 	private double concentrationRedoxC;
-	private double diffusionConstantD;
+	private double diffusionConstantOx;
+	private double diffusionConstantRe;
 	private double upperPotentialVU;
 	private double lowerPotentialVL;
 	private double scanRateV;
@@ -54,7 +55,8 @@ public class Simulation {
 		// PRIVATE DATA
 		rateConstantK = k0;
 		concentrationRedoxC = c0 * 0.001D;
-		diffusionConstantD = D0;
+		diffusionConstantOx = D0;
+		diffusionConstantRe = D0;
 		upperPotentialVU = vu0 * 0.001D;
 		lowerPotentialVL = vl0 * 0.001D;
 		scanRateV = v0 * 0.001D;
@@ -74,7 +76,8 @@ public class Simulation {
 	public List<Double[]> play(InputSimulationDto inputData) {
 		rateConstantK = Double.valueOf(inputData.getRateConstantK()).doubleValue();
 		concentrationRedoxC = Double.valueOf(inputData.getConcentrationRedoxC()).doubleValue() * 0.001D;
-		diffusionConstantD = Double.valueOf(inputData.getDiffusionConstantD()).doubleValue();
+		diffusionConstantOx = Double.valueOf(inputData.getDiffusionConstantOx()).doubleValue();
+		diffusionConstantRe = Double.valueOf(inputData.getDiffusionConstantRe()).doubleValue();
 		upperPotentialVU = Double.valueOf(inputData.getUpperPotentialVU()).doubleValue() * 0.001D;
 		// Math.max(0.20000000000000001D,
 		// Double.valueOf(inputData.getUpperPotentialVU()).doubleValue() * 0.001D);
@@ -82,27 +85,32 @@ public class Simulation {
 		scanRateV = Double.valueOf(inputData.getScanRateV()).doubleValue() * 0.001D;
 		cycleNumberCN = Integer.valueOf(inputData.getCycleNumberCN()).intValue();
 
-		return cvCalc(rateConstantK, concentrationRedoxC, diffusionConstantD, diffusionConstantD, upperPotentialVU,
-				lowerPotentialVL, scanRateV, cycleNumberCN);
+		Double temperature = Double.valueOf(inputData.getTemperature()).doubleValue();
+		Double alfa = Double.valueOf(inputData.getAlfa()).doubleValue();
+		int electronsNumber = Integer.valueOf(inputData.getElectronsNumber()).intValue();
+		Double standartPotential = Double.valueOf(inputData.getStandartPotential()).doubleValue();
+
+		return cvCalc(temperature, alfa, electronsNumber, standartPotential, rateConstantK, concentrationRedoxC,
+				diffusionConstantOx, diffusionConstantRe, upperPotentialVU, lowerPotentialVL, scanRateV, cycleNumberCN);
 	}
 
-	private List<Double[]> cvCalc(double rateConstant, double concentrationRedox, double diffusionConstantOx,
-			double diffusionConstantRe, double upperPotential, double lowerPotential, double scanRate,
-			int cycleNumber) {
+	private List<Double[]> cvCalc(double temperature, double alfa, int electronsNumber, double standartPotential,
+			double rateConstant, double concentrationRedox, double diffusionConstantOx, double diffusionConstantRe,
+			double upperPotential, double lowerPotential, double scanRate, int cycleNumber) {
 
 		List<Double[]> result = new ArrayList<>();
 
 		double d6 = 0.0D;
 		double d8 = 0.0D;
 
-		double temperature = 298.14999999999998D;// EDITAR
-		double alfa = 0.5D;// EDITAR
+//		temperature = 298.14999999999998D;// COMMENT
+//		alfa = 0.5D;// COMMENT
 		double d14 = 1.0D;
 		double d16 = upperPotential;
 		double d17 = lowerPotential;
 
-		int electronsNumber = 1;// EDITAR
-		double standartPotential = 0.0D;// EDITAR
+//		electronsNumber = 1;// COMMENT
+//		standartPotential = 0.0D;// COMMENT
 		int l = (int) (Math.abs(d16 * 1000D - d17 * 1000D) * 2D);
 		double d18 = Math.abs(((d16 - d17) / scanRate) * 2D);
 		int i1 = l / 2;
@@ -273,11 +281,11 @@ public class Simulation {
 	}
 
 	public double getD() {
-		return diffusionConstantD;
+		return diffusionConstantOx;
 	}
 
 	public void setD(double d) {
-		diffusionConstantD = d;
+		diffusionConstantRe = d;
 	}
 
 	public double getVu() {

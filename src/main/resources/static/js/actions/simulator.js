@@ -13,9 +13,14 @@ $(document).ready(function() {
 	$('#simulation-data-btn').click(function() {
 
 		var dto = {
+				"temperature" : $('#temperature').val(),
+				"alfa" : $('#alfa').val(),
+				"electronsNumber" : $('#electronsNumber').val(),
+				"standartPotential" : $('#standartPotential').val(),
+				"diffusionConstantOx" : $('#diffusionConstantOx').val(),
+				"diffusionConstantRe" : $('#diffusionConstantRe').val(),
 			"rateConstantK" : $('#rateConstantK').val(),
 			"concentrationRedoxC" : $('#concentrationRedoxC').val(),
-			"diffusionConstantD" : $('#diffusionConstantD').val(),
 			"scanRateV" : $('#scanRateV').val(),
 			"upperPotentialVU" : $('#upperPotentialVU').val(),
 			"lowerPotentialVL" : $('#lowerPotentialVL').val(),
