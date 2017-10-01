@@ -55,34 +55,40 @@ $( document ).ready(function() {
 					$.each(lines, function(lineRow){
 						var row = lines[lineRow].split(pointSeparator);
 						
+						var x = row[0];
+						var y = row[1];
+						
 						if (decimalSeparator != ".") {
-							row[0] = row[0] ? row[0].replace(decimalSeparator,'.') : row[0];
-							row[1] = row[1] ? row[1].replace(decimalSeparator,'.') : row[1];
+							x = x ? x.replace(decimalSeparator,'.').replace(/\+/g,'') : x;
+							y = y ? y.replace(decimalSeparator,'.').replace(/\+/g,'') : y;
+						}else{
+							x = x ? x.replace(/\+/g,'') : x;
+							y = y ? y.replace(/\+/g,'') : y;
 						}
 						
 						var errorClass = '';
-						if(    row[0] == null 
-							|| row[1] == null
-							|| !$.isNumeric( row[0] )
-							|| !$.isNumeric( row[1] )){
+						if(    x == null 
+							|| y == null
+							|| !$.isNumeric( x )
+							|| !$.isNumeric( y )){
 							errorClass = 'error';
 							errorLines = errorLines + 1;
 						}
 						
 						if (errorClass == 'error') {
 							if (!ignoreErros) {
-								data = data + '[' + row[0] +','+ row[1] +'],';
+								data = data + '[' + x +','+ y +'],';
 							}
 						}else{
-							data = data + '[' + row[0] +','+ row[1] +'],';
+							data = data + '[' + x +','+ y +'],';
 						}
 						
 						
 		              	$('#table-experimental-data tr:last').after(
 						'<tr>'+
 					      '<th scope="row" class="row-center '+errorClass+'">'+lineRow+'</th>'+
-					      '<td class="row-center">'+row[0]+'</td>'+
-					      '<td class="row-center">'+row[1]+'</td>'+
+					      '<td class="row-center">'+x+'</td>'+
+					      '<td class="row-center">'+y+'</td>'+
 					    '</tr>'
 						);	
 						
