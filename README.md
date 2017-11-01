@@ -5,7 +5,8 @@ This development is a tool to simulate and compare data with experimental result
 mvn package && java -jar target/voltammetry-1.0.0.jar
 
 # Just run
-java -jar dist/voltammetry-1.0.0.jar
+java -jar dist/voltammetry-1.0.X.jar
+Validate the X of the final version
 
 # Tools used 
 * Maven 3.5.0
